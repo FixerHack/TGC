@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 300px;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .header {
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+
+    .logo {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .version {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+
+    .content {
+      background: white;
+      border-radius: 15px 15px 0 0;
+      padding: 20px;
+    }
+
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .setting-row:last-child {
+      border-bottom: none;
+    }
+
+    .setting-label {
+      font-size: 14px;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .setting-label .icon {
+      font-size: 18px;
+    }
+
+    /* Toggle Switch */
+    .toggle {
+      position: relative;
+      width: 50px;
+      height: 26px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.3s;
+      border-radius: 26px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #4CAF50;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    /* Language Select */
+    .language-select {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      background: white;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .language-select:focus {
+      border-color: #667eea;
+    }
+
+    .status {
+      margin-top: 15px;
+      padding: 12px;
+      background: #e8f5e9;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 13px;
+      color: #2e7d32;
+    }
+
+    .status.disabled {
+      background: #ffebee;
+      color: #c62828;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🛡️</div>
+    <div class="title">Telegram Anti-Phishing</div>
+    <div class="version">v1.0</div>
+  </div>
+
+  <div class="content">
+    <div class="setting-row">
+      <div class="setting-label">
+        <span class="icon">🔔</span>
+        <span id="label-protection">Захист увімкнено</span>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-enabled" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="setting-row">
+      <div class="setting-label">
+        <span class="icon">🌐</span>
+        <span id="label-language">Мова / Language</span>
+      </div>
+      <select class="language-select" id="language-select">
+        <option value="uk">Українська</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+
+    <div id="status" class="status">
+      ✅ <span id="status-text">Розширення активне</span>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
