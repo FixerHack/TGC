@@ -1,4 +1,4 @@
-// Завантаження поточних налаштувань
+// Завантаження поточних налаштувань при відкритті popup
 chrome.storage.sync.get(['enabled', 'language'], (result) => {
   const enabled = result.enabled !== false;
   const language = result.language || 'uk';
@@ -6,18 +6,19 @@ chrome.storage.sync.get(['enabled', 'language'], (result) => {
   // Встановити стан перемикача
   document.getElementById('toggle-enabled').checked = enabled;
   
-  // Встановити мову
+  // Встановити вибрану мову
   document.getElementById('language-select').value = language;
   
-  // Оновити статус
+  // Оновити статус та мітки
   updateStatus(enabled, language);
   updateLabels(language);
 });
 
-// Перемикач увімкнено/вимкнено
+// Обробник зміни стану перемикача (увімкнено/вимкнено)
 document.getElementById('toggle-enabled').addEventListener('change', (e) => {
   const enabled = e.target.checked;
   
+  // Зберегти нове значення
   chrome.storage.sync.set({ enabled }, () => {
     chrome.storage.sync.get(['language'], (result) => {
       updateStatus(enabled, result.language || 'uk');
@@ -25,10 +26,11 @@ document.getElementById('toggle-enabled').addEventListener('change', (e) => {
   });
 });
 
-// Зміна мови
+// Обробник зміни мови
 document.getElementById('language-select').addEventListener('change', (e) => {
   const language = e.target.value;
   
+  // Зберегти нову мову
   chrome.storage.sync.set({ language }, () => {
     chrome.storage.sync.get(['enabled'], (result) => {
       updateLabels(language);
@@ -37,7 +39,7 @@ document.getElementById('language-select').addEventListener('change', (e) => {
   });
 });
 
-// Оновлення статусу
+// Функція оновлення статусу
 function updateStatus(enabled, language) {
   const statusDiv = document.getElementById('status');
   const statusText = document.getElementById('status-text');
@@ -62,19 +64,39 @@ function updateStatus(enabled, language) {
   }
 }
 
-// Оновлення міток
+// Функція оновлення міток інтерфейсу
 function updateLabels(language) {
   const labels = {
     uk: {
       protection: 'Захист увімкнено',
-      language: 'Мова / Language'
+      language: 'Мова / Language',
+      clearWhitelist: 'Очистити білий список'
     },
     en: {
       protection: 'Protection enabled',
-      language: 'Language / Мова'
+      language: 'Language / Мова',
+      clearWhitelist: 'Clear whitelist'
     }
   };
   
   document.getElementById('label-protection').textContent = labels[language].protection;
   document.getElementById('label-language').textContent = labels[language].language;
+  document.getElementById('label-clear').textContent = labels[language].clearWhitelist;
 }
+
+// Кнопка очищення білого списку
+document.getElementById('clear-whitelist-btn').addEventListener('click', () => {
+  chrome.storage.sync.get(['language'], (result) => {
+    const lang = result.language || 'uk';
+    const confirmMsg = lang === 'uk' 
+      ? 'Очистити білий список? Усі додані сайти будуть знову перевірятись.'
+      : 'Clear whitelist? All added sites will be checked again.';
+    
+    if (confirm(confirmMsg)) {
+      chrome.storage.sync.set({ whitelist: [] }, () => {
+        const successMsg = lang === 'uk' ? '✅ Білий список очищено' : '✅ Whitelist cleared';
+        alert(successMsg);
+      });
+    }
+  });
+});

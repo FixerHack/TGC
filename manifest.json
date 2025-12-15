@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Telegram Anti-Phishing Guard",
-  "version": "1.0",
-  "description": "Захист від фішингових сайтів Telegram",
+  "name": "Telegram Anti-Phishing Guard Pro",
+  "version": "2.0",
+  "description": "Розширений захист від фішингових сайтів Telegram з AI-аналізом",
   "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": ["<all_urls>"],
   "background": {
@@ -17,7 +17,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.js"],
+      "js": ["phishing-db.js", "content.js"],
       "run_at": "document_idle"
     }
   ],
